@@ -1,0 +1,179 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title>Lars R&ouml;glin - PNA/ peptide/ protein mass calculation</title>
+    <meta name="author"
+          content="Lars R&ouml;glin" />
+    <link rel="stylesheet"
+          type="text/css"
+          href="files/stylesheet.css" />
+    <meta http-equiv="Content-Type"
+          content="text/html; charset=us-ascii" />
+    <meta name="robots"
+          content="index,follow" />
+    <meta name="Author"
+          content="Lars R&ouml;glin" />
+    <meta name="description"
+          content="Oligo-Tools" />
+</head>
+
+<body>
+    <table width="80%"
+           border="0"
+           cellspacing="0"
+           cellpadding="0"
+           align="center"
+           summary="layout-table 1">
+        <tr>
+            <td valign="top"
+                align="center"
+                width="100%">
+                <div class="nav-item-selected">
+                    PNA/ peptide/ protein mass calculation
+                </div>            
+            </td>
+        </tr>
+        <tr>
+            <td valign="top"
+                align="center"
+                width="100%">
+                <hr />
+
+                <table width="80%"
+                       align="center"
+                       border="0"
+                       cellspacing="0"
+                       cellpadding="5"
+                       summary="layout-table 2">
+                <form method="post"
+                      action="/cgi-bin/pepmass.py">
+                  <tr>
+                    <td align="left"
+                    	  colspan="6">
+                      <h2>Sequence:</h2><textarea name="Sequenz" cols="80" rows="15"></textarea><br />
+                    </td>
+                  </tr>
+                  <tr>
+                  	<td align="left"
+                  		  colspan="6">
+                  		<input type="submit" value="Submit">
+        							<input type="reset" value="Reset">
+      							</td>
+      						</tr>
+      						</form>
+									<tr>
+										<td colspan="6">
+											<h2>List of known residues</h3>
+										</td>
+									</tr>
+									<tr>
+										<td>
+											<h3>PNA-monomers</h3>
+										</td>
+										<td>
+											<h3>Amino acids</h3>
+										</td>
+										<td>
+											<h3>Protecting groups</h3>
+										</td>
+										<td>
+											<h3>Fluorophores</h3>
+										</td>
+										<td>
+											<h3>Other modifications</h3>
+										</td>
+										<td>
+											<h3>Typical C-Terminal groups</h3>
+										</td>
+									</tr>
+									<tr>
+										<td valign="top">
+											a<br />
+											c<br />
+											g<br />
+											t<br />
+											Aeg<br />
+										</td>
+										<td valign="top">
+											A, Ala<br />
+											R, Arg<br />
+											N, Asn<br />
+											D, Asp<br />
+											C, Cys<br />
+											E, Glu<br />
+											Q, Gln<br />
+											G, Gly<br />
+											G, His<br />
+											I, Ile<br />
+											L, Leu<br />
+											K, Lys<br />
+											M, Met<br />
+											F, Phe<br />
+											P, Pro<br />
+											S, Ser<br />
+											T, Thr<br />
+											W, Trp<br />
+											Y, Tyr<br />
+											V, Val <br /><br />
+											O, Orn (Ornithine)<br />
+											pY, pTyr (Phosphotyrosine)<br />
+											Hs, Hse (Homoserine)<br />
+											HsX, HseLac (Homoserine lactone)<br />
+											Isocys (Isocysteine)<br />
+										</td>
+										<td valign="top">
+											Alloc<br />
+											Bhoc<br />
+											Boc<br />
+											Bzl<br />
+											Cbz<br />
+											Dde<br />
+											Fmoc<br />
+											Mmt<br />
+											Mtt<br />
+											PMB<br />
+											Pbf<br />
+											SEt<br />
+											SBu<br />
+											tBu<br />
+											Tmob<br />
+											Trt<br />
+											Z<br />
+										</td>
+										<td valign="top">
+											Alexa594<br />
+											Dansyl<br />
+											Dabcyl<br />
+											Dabsyl<br />
+											EDANS<br />
+											FAM<br />
+											FITC<br />
+											NBD<br />
+											NIR664<br />
+											NIR667<br />
+											NIR797<br />
+											TAMRA<br />
+										</td>
+										<td valign="top">
+											Ac (Acetylation)<br />
+											Biotin<br />
+											p (Phosphorylation)<br />
+										</td>
+										<td valign="top">
+											NH2, CONH2 (Amidation)<br />
+											COSBzl (Benzyl thioester)<br />
+											COSEt (Ethyl thioester)<br />
+											COSMESA (MESNA thioester)<br />
+											COSMPA (3-Mercaptopropionic acid amide thioester)<br />
+											COSPh (Thiophenol thioester)<br />
+											COSVAA (6-Mercaptovaleric acid amide thioester)<br />
+										</td>
+									</tr>
+                </table>
+            </td>
+        </tr>
+    </table>
+</body>
+</html>
