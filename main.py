@@ -144,12 +144,12 @@ def add_building_block(mass: float, formula: dict, building_block: str, weight: 
         mass += (input_monomers().loc[input_monomers()["Group"]==building_block, weight].values[0])
         leaving = (input_monomers().loc[input_monomers()["Group"]==building_block, "Leaving"].values[0])
         for atom in atoms:
-            formula[atom] += (input_monomers().loc[input_monomers()["Group"]==building_block, atom].values[0])
+            formula[atom] += int(input_monomers().loc[input_monomers()["Group"]==building_block, atom].values[0])
 
         if leaving != "---":
             mass -= (input_monomers().loc[input_monomers()["Group"]==leaving, weight].values[0])
             for atom in atoms:
-                formula[atom] -= (input_monomers().loc[input_monomers()["Group"]==leaving, atom].values[0])
+                formula[atom] -= int(input_monomers().loc[input_monomers()["Group"]==leaving, atom].values[0])
     except IndexError:
         mass += (input_monomers().loc[input_monomers()["Group"]=="UKN", weight].values[0])
         leaving = (input_monomers().loc[input_monomers()["Group"]=="UKN", "Leaving"].values[0])
@@ -159,7 +159,7 @@ def add_building_block(mass: float, formula: dict, building_block: str, weight: 
         if leaving != "---":
             mass -= (input_monomers().loc[input_monomers()["Group"]==leaving, weight].values[0])
             for atom in atoms:
-                formula[atom] -= (input_monomers().loc[input_monomers()["Group"]==leaving, atom].values[0])
+                formula[atom] -= int(input_monomers().loc[input_monomers()["Group"]==leaving, atom].values[0])
 
     return mass, formula
 
