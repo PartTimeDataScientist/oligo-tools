@@ -27,7 +27,29 @@ async def lifespan(app: FastAPI):
         raise Exception("Implementation Error", "Molecular formula for test sequence were not calculated correctly")
     yield
 
-app = FastAPI(lifespan=lifespan)
+description = """
+The PNA-Peptide-Conjucate Feature Calculation API allows you to calculate important features of these molecules!
+
+The source-code of the API is available on [Github](https://www.github.com) (TODO: Add repository URL after publishing to Github)  
+A demo instance of the API is available on [Fly.io](https://pepmass.fly.dev/)
+
+"""
+
+app = FastAPI(
+    lifespan=lifespan,
+    title="PepMass API",
+    version="0.1",
+    summary="PNA-Peptide-Conjucate Feature Calculation API",
+    description=description,
+        contact={
+        "name": "PartTimeDataScientist",
+        "url": "http://data-science-solutions.de/pepmass",
+        "email": "pepmass@data-science-solutions.de",
+    },
+    license_info={
+        "name" : "MIT License",
+        "identifier": "MIT"}
+    )
 
 @app.get("/", tags=["General information"])
 async def root():
