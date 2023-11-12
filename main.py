@@ -1,9 +1,4 @@
-#!/usr/bin/python2.7
-# Re-Implementation of the PNA/Peptide mass calculation script in Python
-# Dr. Lars Roeglin, 2011
-
 import re  # Regular Expressions for string handling
-from collections import defaultdict
 from contextlib import asynccontextmanager
 
 import pandas as pd
@@ -182,6 +177,8 @@ def calc_features(sequence: str) -> list:
         else:
             mol_wt, formula = add_building_block(mol_wt, formula, monomer, "MolWt")
             exact, dummy = add_building_block(exact, dummy, monomer, "Exact")
+
+    # TODO: Capture intermediary results for termination sequences
 
     result = {
         "MolWt": round(mol_wt,4),
