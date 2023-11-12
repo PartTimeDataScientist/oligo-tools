@@ -127,6 +127,13 @@ async def formula(sequence: str):
     """
     return calc_features(sequence)["Mol Formula"]
 
+@app.get("/calc/termination_sequences", tags=["Feature calculation"])
+async def terminations(sequence: str):
+    """
+    This endpoint returns the features of all termination sequences of the given input sequence.
+    """
+    return calc_features(sequence)["Termination Sequences"]
+
 @app.get("/calc/all_features", tags=["Feature calculation"])
 async def all_features(sequence: str):
     """
@@ -181,11 +188,13 @@ def add_building_block(mass: float, formula: dict, building_block: str, weight: 
     return mass, formula
 
 def calc_features(sequence: str) -> list:
-    dummy = {'C': 0, 'H': 0, 'O': 0, 'N': 0, 'S': 0, 'Cl': 0, 'I': 0, 'P': 0, 'Br': 0}
     mol_wt = 0
     exact = 0
     formula = {'C': 0, 'H': 0, 'O': 0, 'N': 0, 'S': 0, 'Cl': 0, 'I': 0, 'P': 0, 'Br': 0}
-    for monomer in split_sequence(sequence):
+    termination_seq = ""
+    termination_seq_df = pd.DataFrame()
+    dummy = {'C': 0, 'H': 0, 'O': 0, 'N': 0, 'S': 0, 'Cl': 0, 'I': 0, 'P': 0, 'Br': 0}
+    for idx, monomer in enumerate(split_sequence(sequence)):
         # If Monomer contains bracketed statement add the mass of the bracketed monomer as well
         if re.search('\(.*\)', monomer):
             m = re.search('(.*)\((.*)\)', monomer)
@@ -195,10 +204,30 @@ def calc_features(sequence: str) -> list:
             mol_wt, formula = add_building_block(mol_wt, formula, modifier, "MolWt")
             exact, dummy = add_building_block(exact, dummy, monomer, "Exact")
             exact, dummy = add_building_block(exact, dummy, modifier, "Exact")
+            termination_seq = monomer + "(" + modifier + ") " + termination_seq
+            if (idx>0 and idx < len(split_sequence(sequence))-1):
+                row = {
+                    "Index": idx,
+                    "sequence": termination_seq,
+                    "MolWt": float(round(mol_wt,2)),
+                    "Exact Mass": float(round(exact,4))
+                }
+                row_df = pd.DataFrame(data=row, index=[0])
+                termination_seq_df = pd.concat([termination_seq_df,row_df], ignore_index=True)            
         # Else only add mass of building block
         else:
             mol_wt, formula = add_building_block(mol_wt, formula, monomer, "MolWt")
             exact, dummy = add_building_block(exact, dummy, monomer, "Exact")
+            termination_seq = monomer + " " + termination_seq
+            if (idx>0 and idx < len(split_sequence(sequence))-1):
+                row = {
+                    "Index": idx,
+                    "sequence": termination_seq.strip(),
+                    "MolWt": float(round(mol_wt,2)),
+                    "Exact Mass": float(round(exact,4))
+                }
+                row_df = pd.DataFrame(data=row, index=[0])
+                termination_seq_df = pd.concat([termination_seq_df,row_df], ignore_index=True)
 
     # TODO: Capture intermediary results for termination sequences
 
@@ -208,6 +237,8 @@ def calc_features(sequence: str) -> list:
         "Mol Formula": formula,
         "HPLC-SIM Ions": calc_multi_ions(mol_wt, "Hplus", "MolWt", 100, 50000, 0),
         "MolWt Ions": calc_multi_ions(mol_wt, "Hplus", "MolWt", 100, 50000, 2),
-        "HRMS Ions": calc_multi_ions(exact, "Hplus", "Exact", 100, 50000, 4)
+        "HRMS Ions": calc_multi_ions(exact, "Hplus", "Exact", 100, 50000, 4),
+        "Termination Sequences" : termination_seq_df.to_dict(orient='records')   
     }
+        #"Termination Sequences" : termination_seq_df.to_json(orient="records", lines=False).replace('\"', '*')
     return (result)
