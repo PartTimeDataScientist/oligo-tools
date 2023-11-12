@@ -34,46 +34,87 @@ async def lifespan(app: FastAPI):
 
 app = FastAPI(lifespan=lifespan)
 
-@app.get("/")
+@app.get("/", tags=["General information"])
 async def root():
+    """
+    Returns some general information about the PNA-Peptide Mass Calculation API.
+    """
     return {"info" : "PNA-Peptide Mass Calculation API",
             "version" : "0.1"}
 
-@app.get("/health")
+@app.get("/health", tags=["General information"])
 async def root():
+    """
+    Just a simple health endpoint - required e.g. for deployment to fly.io.
+    """
     return {"status" : "ok"}
 
-@app.get("/building_blocks")
+@app.get("/building_blocks", tags=["General information"])
 async def building_blocks():
+    """
+    Returns a list of all supported building blocks for performing calculations.
+
+    **Format of this endpoint is currently WIP and will likely change in the future**
+    """
     return (input_monomers().to_markdown(index=False))
     #return (input_monomers().to_string(columns=["Group"], header=True, index=False))
 
-@app.get("/calc/mol_wt")
+@app.get("/calc/mol_wt", tags=["Feature calculation"])
 async def exact(sequence: str):
+    """
+    This endpoint returns the molecular weight of the given input sequence.
+    """
     return calc_features(sequence)["MolWt"]
 
-@app.get("/calc/exact")
+@app.get("/calc/exact", tags=["Feature calculation"])
 async def exact(sequence: str):
+    """
+    This endpoint returns the monoisotopic exact mass of the given input sequence.
+    """
+
     return calc_features(sequence)["Exact"]
 
-@app.get("/calc/sim_ions")
+@app.get("/calc/sim_ions", tags=["Feature calculation"])
 async def exact(sequence: str):
+    """
+    This endpoint returns the excpecd SIM ions frequently used e.g. in HPLC-purifications.
+    
+    **ATTENTION:** Not all of them are expected to be seen, this calculation simply lists all **possible** values
+    """
     return calc_features(sequence)["HPLC-SIM Ions"]
 
-@app.get("/calc/molwt_ions")
+@app.get("/calc/molwt_ions", tags=["Feature calculation"])
 async def exact(sequence: str):
+    """
+    This endpoint returns multiply charged veriations of the given input sequence (calculated from the molecular weight). Depending on the ionization method and the used mass spectrometer you might observe these multiply charged variatons.
+
+
+    **ATTENTION:** Not all of them are expected to be seen, this calculation simply lists all **possible** values
+    """
     return calc_features(sequence)["MolWt Ions"]
 
-@app.get("/calc/hrms_ions")
+@app.get("/calc/hrms_ions", tags=["Feature calculation"])
 async def exact(sequence: str):
+    """
+    This endpoint returns multiply charged veriations of the given input sequence (calculated from the exact mass). Depending on the ionization method and the used mass spectrometer you might observe these multiply charged variatons.
+
+
+    **ATTENTION:** Not all of them are expected to be seen, this calculation simply lists all **possible** values
+    """
     return calc_features(sequence)["HRMS Ions"]
 
-@app.get("/calc/formula")
-async def exact(sequence: str):
+@app.get("/calc/formula", tags=["Feature calculation"])
+async def formula(sequence: str):
+    """
+    This endpoint returns the molecular formula of the given input sequence.
+    """
     return calc_features(sequence)["Mol Formula"]
 
-@app.get("/calc/all_features")
+@app.get("/calc/all_features", tags=["Feature calculation"])
 async def all_features(sequence: str):
+    """
+    This endpoint returns all calculated features in a unified json.
+    """
     return calc_features(sequence)
 
 def input_monomers() -> pd.DataFrame:
