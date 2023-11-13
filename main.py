@@ -76,7 +76,7 @@ async def building_blocks():
     return (input_monomers().to_markdown(index=False))
     #return (input_monomers().to_string(columns=["Group"], header=True, index=False))
 
-@app.get("/calc/mol_wt", tags=["Feature calculation"])
+@app.get("/calc/molwt", tags=["Feature calculation"])
 async def exact(sequence: str):
     """
     This endpoint returns the molecular weight of the given input sequence.
@@ -188,7 +188,7 @@ def add_building_block(mass: float, formula: dict, building_block: str, weight: 
     return mass, formula
 
 def calc_features(sequence: str) -> list:
-    mol_wt = 0
+    molwt = 0
     exact = 0
     formula = {'C': 0, 'H': 0, 'O': 0, 'N': 0, 'S': 0, 'Cl': 0, 'I': 0, 'P': 0, 'Br': 0}
     termination_seq = ""
@@ -200,8 +200,8 @@ def calc_features(sequence: str) -> list:
             m = re.search('(.*)\((.*)\)', monomer)
             modifier = m.group(2)
             monomer = m.group(1)
-            mol_wt, formula = add_building_block(mol_wt, formula, monomer, "MolWt")
-            mol_wt, formula = add_building_block(mol_wt, formula, modifier, "MolWt")
+            molwt, formula = add_building_block(molwt, formula, monomer, "MolWt")
+            molwt, formula = add_building_block(molwt, formula, modifier, "MolWt")
             exact, dummy = add_building_block(exact, dummy, monomer, "Exact")
             exact, dummy = add_building_block(exact, dummy, modifier, "Exact")
             termination_seq = monomer + "(" + modifier + ") " + termination_seq
@@ -220,7 +220,7 @@ def calc_features(sequence: str) -> list:
                 termination_seq_df = pd.concat([termination_seq_df,row_df], ignore_index=True)            
         # Else only add mass of building block
         else:
-            mol_wt, formula = add_building_block(mol_wt, formula, monomer, "MolWt")
+            molwt, formula = add_building_block(molwt, formula, monomer, "MolWt")
             exact, dummy = add_building_block(exact, dummy, monomer, "Exact")
             termination_seq = monomer + " " + termination_seq
             if (idx>0 and idx < len(split_sequence(sequence))-1):
@@ -237,14 +237,12 @@ def calc_features(sequence: str) -> list:
                 row_df = pd.DataFrame(data=row, index=[0])
                 termination_seq_df = pd.concat([termination_seq_df,row_df], ignore_index=True)
 
-    # TODO: Capture intermediary results for termination sequences
-
     result = {
-        "MolWt": round(mol_wt,4),
+        "MolWt": round(molwt,4),
         "Exact": round(exact,4),
         "Mol Formula": formula,
-        "HPLC-SIM Ions": calc_multi_ions(mol_wt, "Hplus", "MolWt", 100, 50000, 0),
-        "MolWt Ions": calc_multi_ions(mol_wt, "Hplus", "MolWt", 100, 50000, 2),
+        "HPLC-SIM Ions": calc_multi_ions(molwt, "Hplus", "MolWt", 100, 50000, 0),
+        "MolWt Ions": calc_multi_ions(molwt, "Hplus", "MolWt", 100, 50000, 2),
         "HRMS Ions": calc_multi_ions(exact, "Hplus", "Exact", 100, 50000, 4),
         "Termination Sequences" : termination_seq_df.to_dict(orient='records')   
     }
