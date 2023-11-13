@@ -206,11 +206,15 @@ def calc_features(sequence: str) -> list:
             exact, dummy = add_building_block(exact, dummy, modifier, "Exact")
             termination_seq = monomer + "(" + modifier + ") " + termination_seq
             if (idx>0 and idx < len(split_sequence(sequence))-1):
+                molwt_ac, dummy = add_building_block(molwt, dummy, "Ac", "MolWt")
+                exact_ac, dummy = add_building_block(exact, dummy, "Ac", "Exact")
                 row = {
                     "Index": idx,
-                    "sequence": termination_seq,
-                    "MolWt": float(round(mol_wt,2)),
-                    "Exact Mass": float(round(exact,4))
+                    "Sequence": termination_seq,
+                    "MolWt-H": float(round(molwt,2)),
+                    "Exact Mass-H": float(round(exact,4)),
+                    "MolWt-Ac": float(round(molwt_ac,2)),
+                    "Exact Mass-Ac": float(round(exact_ac,4))
                 }
                 row_df = pd.DataFrame(data=row, index=[0])
                 termination_seq_df = pd.concat([termination_seq_df,row_df], ignore_index=True)            
@@ -220,11 +224,15 @@ def calc_features(sequence: str) -> list:
             exact, dummy = add_building_block(exact, dummy, monomer, "Exact")
             termination_seq = monomer + " " + termination_seq
             if (idx>0 and idx < len(split_sequence(sequence))-1):
+                molwt_ac, dummy = add_building_block(molwt, dummy, "Ac", "MolWt")
+                exact_ac, dummy = add_building_block(exact, dummy, "Ac", "Exact")
                 row = {
                     "Index": idx,
-                    "sequence": termination_seq.strip(),
-                    "MolWt": float(round(mol_wt,2)),
-                    "Exact Mass": float(round(exact,4))
+                    "Sequence": termination_seq,
+                    "MolWt-H": float(round(molwt,2)),
+                    "Exact Mass-H": float(round(exact,4)),
+                    "MolWt-Ac": float(round(molwt_ac,2)),
+                    "Exact Mass-Ac": float(round(exact_ac,4))
                 }
                 row_df = pd.DataFrame(data=row, index=[0])
                 termination_seq_df = pd.concat([termination_seq_df,row_df], ignore_index=True)
