@@ -1,8 +1,10 @@
+import os
 import re  # Regular Expressions for string handling
 from contextlib import asynccontextmanager
 
 import pandas as pd
-from fastapi import FastAPI
+from fastapi import FastAPI, Response
+from fastapi.middleware.cors import CORSMiddleware
 
 
 @asynccontextmanager
@@ -51,13 +53,45 @@ app = FastAPI(
         "identifier": "MIT"}
     )
 
+origins = [
+    "*"
+]
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=origins,
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
+
 @app.get("/", tags=["General information"])
-async def root():
-    """
-    Returns some general information about the PNA-Peptide Mass Calculation API.
-    """
-    return {"info" : "PNA-Peptide Mass Calculation API",
-            "version" : "0.1"}
+async def main():
+    root = os.path.dirname(os.path.abspath(__file__))
+    with open(os.path.join(root, 'masscalc.htm')) as fh:
+        data = fh.read()
+    return Response(content=data, media_type="text/html")
+
+# async def root():
+#     """
+#     Returns some general information about the PNA-Peptide Mass Calculation API.
+#     """
+#     return {"info" : "PNA-Peptide Mass Calculation API",
+#             "version" : "0.1"}
+
+@app.get("/script.js", tags=["General information"])
+async def main():
+    root = os.path.dirname(os.path.abspath(__file__))
+    with open(os.path.join(root, 'script.js')) as fh:
+        data = fh.read()
+    return Response(content=data, media_type="text/javascript")
+
+# async def root():
+#     """
+#     Returns some general information about the PNA-Peptide Mass Calculation API.
+#     """
+#     return {"info" : "PNA-Peptide Mass Calculation API",
+#             "version" : "0.1"}
 
 @app.get("/health", tags=["General information"])
 async def root():

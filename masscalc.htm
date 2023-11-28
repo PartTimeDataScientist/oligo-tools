@@ -1,179 +1,35 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
-    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
-
-<html xmlns="http://www.w3.org/1999/xhtml">
-<head>
-    <title>Lars R&ouml;glin - PNA/ peptide/ protein mass calculation</title>
-    <meta name="author"
-          content="Lars R&ouml;glin" />
-    <link rel="stylesheet"
-          type="text/css"
-          href="files/stylesheet.css" />
-    <meta http-equiv="Content-Type"
-          content="text/html; charset=us-ascii" />
-    <meta name="robots"
-          content="index,follow" />
-    <meta name="Author"
-          content="Lars R&ouml;glin" />
-    <meta name="description"
-          content="Oligo-Tools" />
-</head>
-
-<body>
-    <table width="80%"
-           border="0"
-           cellspacing="0"
-           cellpadding="0"
-           align="center"
-           summary="layout-table 1">
-        <tr>
-            <td valign="top"
-                align="center"
-                width="100%">
-                <div class="nav-item-selected">
-                    PNA/ peptide/ protein mass calculation
-                </div>            
-            </td>
-        </tr>
-        <tr>
-            <td valign="top"
-                align="center"
-                width="100%">
-                <hr />
-
-                <table width="80%"
-                       align="center"
-                       border="0"
-                       cellspacing="0"
-                       cellpadding="5"
-                       summary="layout-table 2">
-                <form method="post"
-                      action="/cgi-bin/pepmass.py">
-                  <tr>
-                    <td align="left"
-                    	  colspan="6">
-                      <h2>Sequence:</h2><textarea name="Sequenz" cols="80" rows="15"></textarea><br />
-                    </td>
-                  </tr>
-                  <tr>
-                  	<td align="left"
-                  		  colspan="6">
-                  		<input type="submit" value="Submit">
-        							<input type="reset" value="Reset">
-      							</td>
-      						</tr>
-      						</form>
-									<tr>
-										<td colspan="6">
-											<h2>List of known residues</h3>
-										</td>
-									</tr>
-									<tr>
-										<td>
-											<h3>PNA-monomers</h3>
-										</td>
-										<td>
-											<h3>Amino acids</h3>
-										</td>
-										<td>
-											<h3>Protecting groups</h3>
-										</td>
-										<td>
-											<h3>Fluorophores</h3>
-										</td>
-										<td>
-											<h3>Other modifications</h3>
-										</td>
-										<td>
-											<h3>Typical C-Terminal groups</h3>
-										</td>
-									</tr>
-									<tr>
-										<td valign="top">
-											a<br />
-											c<br />
-											g<br />
-											t<br />
-											Aeg<br />
-										</td>
-										<td valign="top">
-											A, Ala<br />
-											R, Arg<br />
-											N, Asn<br />
-											D, Asp<br />
-											C, Cys<br />
-											E, Glu<br />
-											Q, Gln<br />
-											G, Gly<br />
-											G, His<br />
-											I, Ile<br />
-											L, Leu<br />
-											K, Lys<br />
-											M, Met<br />
-											F, Phe<br />
-											P, Pro<br />
-											S, Ser<br />
-											T, Thr<br />
-											W, Trp<br />
-											Y, Tyr<br />
-											V, Val <br /><br />
-											O, Orn (Ornithine)<br />
-											pY, pTyr (Phosphotyrosine)<br />
-											Hs, Hse (Homoserine)<br />
-											HsX, HseLac (Homoserine lactone)<br />
-											Isocys (Isocysteine)<br />
-										</td>
-										<td valign="top">
-											Alloc<br />
-											Bhoc<br />
-											Boc<br />
-											Bzl<br />
-											Cbz<br />
-											Dde<br />
-											Fmoc<br />
-											Mmt<br />
-											Mtt<br />
-											PMB<br />
-											Pbf<br />
-											SEt<br />
-											SBu<br />
-											tBu<br />
-											Tmob<br />
-											Trt<br />
-											Z<br />
-										</td>
-										<td valign="top">
-											Alexa594<br />
-											Dansyl<br />
-											Dabcyl<br />
-											Dabsyl<br />
-											EDANS<br />
-											FAM<br />
-											FITC<br />
-											NBD<br />
-											NIR664<br />
-											NIR667<br />
-											NIR797<br />
-											TAMRA<br />
-										</td>
-										<td valign="top">
-											Ac (Acetylation)<br />
-											Biotin<br />
-											p (Phosphorylation)<br />
-										</td>
-										<td valign="top">
-											NH2, CONH2 (Amidation)<br />
-											COSBzl (Benzyl thioester)<br />
-											COSEt (Ethyl thioester)<br />
-											COSMESA (MESNA thioester)<br />
-											COSMPA (3-Mercaptopropionic acid amide thioester)<br />
-											COSPh (Thiophenol thioester)<br />
-											COSVAA (6-Mercaptovaleric acid amide thioester)<br />
-										</td>
-									</tr>
-                </table>
-            </td>
-        </tr>
-    </table>
-</body>
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <title>Sequence Calculator</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@picocss/pico@1/css/pico.min.css">
+    <script src="script.js" defer></script>
+  </head>
+  <body>
+    <main class="container">
+      <h4> PNA, Peptide and PNA-Peptide-Conjugate Mass Calculation</h4>
+        This tool can calculate various molecular parameters of PNAs, peptides as well as PNA-peptide-conjugates. For the calculation enter the full sequece (separated by spaces) including N- or C-Terminal modifications. Base monomers are all amino acids in single or three letter code (single letters: Caps, three letter code: First letter in upper case, subsequent letters in lower case). <br /> <b>Note:</b> Building blocks with wrong capitalization like "gly" or "lYs" will not be recognized. To avoid reporting wrong numbers unkown building blocks are replaced by building block "UKN" which has such high values that this should not stay unnoticed.<br/>
+        <ul>
+        <li><b>Modifications at the N-Terminus</b><br />
+        Modifications at the N-Terminus can simply be added as "first" building block, like "<b><i>FAM</i></b> K C D K G CONH2" or "<b><i>TAMRA</i></b> R C K N N CONH2"</li>
+        <li><b>Modifications at the C-Terminus</b><br />
+        Modifications at the C-Terminus can simply be added as "last" building block, like "K C D K G <b><i>COOH</i></b> " or "R C K N N <b><i>CONH2</i></b>"<br/>
+        <b>Note:</b> While it is not necessary to explicitly declare a free N-Terminus it is necessary to add "COOH" as group to denote a free C-terminus!</li>
+        <li><b>Internal Modifications</b><br />
+        Internal modifications can be added to a building block in round brackets
+        like "Lys(<b><i>FAM</i></b>) K C D K G COOH" or "Lys(<b><i>TAMRA</i></b>) R C K N N COOH"</li>
+        <li><b>Special Modifications</b><br />
+        Besides typical fluorophores it is possible to use "p" to indicate a phosphorylation (e.g. "p Tyr") and a tilde at a Cystein residue to indicate a disulfide bond (e.g. "Ac C(~) K G N R C(~) COOH")</li>
+        </ul>
+        A full list of building blocks will be provided at the "/building_blocks" API-endpoint which is currently still work in progress.
+      <h6>Sequence:</h6>
+      <input type="text" length="400", id="sequenceInput"> <br / >
+      <div class="grid">
+        <button onclick="calculate()">Calculate</button>
+        <button onclick="resetInput()">Reset</button>
+      </div>
+      <div id="result"></div>
+    </main>
+  </body>
 </html>
