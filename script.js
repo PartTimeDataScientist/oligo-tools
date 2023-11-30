@@ -1,5 +1,6 @@
 function resetInput() {
   document.getElementById('sequenceInput').value = '';
+  document.getElementById('buildingblock_container').innerHTML = '';
   document.getElementById('responsive_area').innerHTML = `
   This tool can calculate various molecular parameters of PNAs, peptides as well as PNA-peptide-conjugates. For the calculation enter the full sequece (separated by spaces) including N- or C-Terminal modifications. Base monomers are all amino acids in single or three letter code (single letters: Caps, three letter code: First letter in upper case, subsequent letters in lower case). <br /> <b>Note:</b> Building blocks with wrong capitalization like "gly" or "lYs" will not be recognized. To avoid reporting wrong numbers unkown building blocks are replaced by building block "UKN" which has such high values that this should not stay unnoticed.<br/>
   <ul>
@@ -27,7 +28,7 @@ function calculate() {
 
   const resultDiv = document.getElementById('responsive_area');
   //resultDiv.innerHTML = `<div aria-busy="true">Calculating...</div>`
-  resultDiv.innerHTML = `<progress></progress>`
+  resultDiv.innerHTML = `<progress></progress>`;
 
   // Make GET request to the API
   const apiUrl = `https://pepmass.fly.dev/calc/all_features?sequence=${sequence}`;
@@ -42,6 +43,35 @@ function calculate() {
     });
 }
 
+function buildingBlocks() {
+  bbdiv = document.getElementById('buildingblock_container');
+  const blocks = bbdiv.innerHTML;
+  if (blocks.trim() === '') {
+    console.log("FooBar");
+    bbdiv.innerHTML = `<progress></progress>`;
+    const apiUrl = `https://pepmass.fly.dev/building_blocks`;
+    fetch(apiUrl)
+      .then(response => response.json())
+      .then(data => {
+        bbdiv.innerHTML = `
+        <br/>
+        <h4>Building Blocks</h4>
+        <b>Amino Acids</b><br /> ${data.AminoAcids}<br />
+        <b>PNA monomers</b><br /> ${data.PNAmonomers}<br />
+        <b>Protecting Groups</b><br /> ${data.ProtectingGroups}<br />
+        <b>Fluorophores</b><br /> ${data.Fluorophores}<br />
+        <b>C-terminal Modifications</b><br /> ${data.CTerminalModifications}<br />
+        `;
+      })
+      .catch(error => {
+        console.error('Error fetching data:', error);
+        alert('Error fetching data. Please retry in a moment.');
+      });
+    return;
+  }
+  bbdiv.innerHTML='';
+}
+
 // TODO: Add termination sequences to result
 function displayResult(data) {
   const resultDiv = document.getElementById('responsive_area');
@@ -52,7 +82,7 @@ function displayResult(data) {
     <b>Molecular Formula:</b> ${createMolecularFormula(data['Mol Formula'])}<br />
     <b>HPLC-SIM Ions:</b> ${createSIMIonList(data['HPLC-SIM Ions'])}<br />
     <b>MolWt Ions:</b> ${createIonList(data['MolWt Ions'])}<br />
-    <b>HRMS Ions:</b> ${createIonList(data['HRMS Ions'])}<br />
+    <b>HRMS Ions:</b> ${createIonList(data['HRMS Ions'])}<br /><br />
   `;
 }
 

@@ -8,7 +8,7 @@
   </head>
   <body>
     <main class="container">
-      <h4> PNA, Peptide and PNA-Peptide-Conjugate Mass Calculation</h4>
+      <h3> PNA, Peptide and PNA-Peptide-Conjugate Mass Calculation</h3>
       <div id="responsive_area">
         This tool can calculate various molecular parameters of PNAs, peptides as well as PNA-peptide-conjugates. For the calculation enter the full sequece (separated by spaces) including N- or C-Terminal modifications. Base monomers are all amino acids in single or three letter code (single letters: Caps, three letter code: First letter in upper case, subsequent letters in lower case). <br /> <b>Note:</b> Building blocks with wrong capitalization like "gly" or "lYs" will not be recognized. To avoid reporting wrong numbers unkown building blocks are replaced by building block "UKN" which has such high values that this should not stay unnoticed.<br/>
         <ul>
@@ -23,9 +23,10 @@
         <li><b>Special Modifications</b><br />
         Besides typical fluorophores it is possible to use "p" to indicate a phosphorylation (e.g. "p Tyr") and a tilde at a Cystein residue to indicate a disulfide bond (e.g. "Ac C(~) K G N R C(~) COOH")</li>
         </ul>
-        A full list of building blocks will be provided at the "/building_blocks" API-endpoint which is currently still work in progress.
-      </div>  
-      <h6>Sequence:</h6>
+      </div>
+      A full list of building blocks is available <a href="javascript:void(0)" onclick="buildingBlocks()">here</a>.
+      <div id="buildingblock_container"></div><br/>
+      <h4>Sequence:</h4>
       <input type="text" length="400", id="sequenceInput"> <br / >
       <div class="grid">
         <button onclick="calculate()">Calculate</button>

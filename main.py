@@ -114,21 +114,21 @@ async def building_blocks():
     for monomer in input_monomers().loc[input_monomers()["Type"]=="PNA", "Group"]:
         pnas = pnas + monomer + ", "
     fluorophores = ""
-    for monomer in input_monomers().loc[input_monomers()["Type"]=="fluorophores", "Group"]:
+    for monomer in input_monomers().loc[input_monomers()["Type"]=="Fluorophore", "Group"]:
         fluorophores = fluorophores + monomer + ", "
     c_terminal_mods = ""
     for monomer in input_monomers().loc[input_monomers()["Type"]=="C-terminal modification", "Group"]:
         c_terminal_mods = c_terminal_mods + monomer + ", "
     protecting_groups = ""
-    for monomer in input_monomers().loc[input_monomers()["Type"]=="Protecting Groups", "Group"]:
+    for monomer in input_monomers().loc[input_monomers()["Type"]=="Protecting Group", "Group"]:
         protecting_groups = protecting_groups + monomer + ", "
 
     response = {
-        "Amino Acids": amino_acids,
-        "PNA monomers": pnas,
-        "Protecting Groups": protecting_groups,
-        "Fluorophores": fluorophores,
-        "C-Terminal Modifications": c_terminal_mods
+        "AminoAcids": amino_acids[:-2],
+        "PNAmonomers": pnas[:-2],
+        "ProtectingGroups": protecting_groups[:-2],
+        "Fluorophores": fluorophores[:-2],
+        "CTerminalModifications": c_terminal_mods[:-2]
     }
 
     return(response)
