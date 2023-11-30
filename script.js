@@ -1,6 +1,21 @@
 function resetInput() {
   document.getElementById('sequenceInput').value = '';
-  document.getElementById('result').innerHTML = '';
+  document.getElementById('responsive_area').innerHTML = `
+  This tool can calculate various molecular parameters of PNAs, peptides as well as PNA-peptide-conjugates. For the calculation enter the full sequece (separated by spaces) including N- or C-Terminal modifications. Base monomers are all amino acids in single or three letter code (single letters: Caps, three letter code: First letter in upper case, subsequent letters in lower case). <br /> <b>Note:</b> Building blocks with wrong capitalization like "gly" or "lYs" will not be recognized. To avoid reporting wrong numbers unkown building blocks are replaced by building block "UKN" which has such high values that this should not stay unnoticed.<br/>
+  <ul>
+  <li><b>Modifications at the N-Terminus</b><br />
+  Modifications at the N-Terminus can simply be added as "first" building block, like "<b><i>FAM</i></b> K C D K G CONH2" or "<b><i>TAMRA</i></b> R C K N N CONH2"</li>
+  <li><b>Modifications at the C-Terminus</b><br />
+  Modifications at the C-Terminus can simply be added as "last" building block, like "K C D K G <b><i>COOH</i></b> " or "R C K N N <b><i>CONH2</i></b>"<br/>
+  <b>Note:</b> While it is not necessary to explicitly declare a free N-Terminus it is necessary to add "COOH" as group to denote a free C-terminus!</li>
+  <li><b>Internal Modifications</b><br />
+  Internal modifications can be added to a building block in round brackets
+  like "Lys(<b><i>FAM</i></b>) K C D K G COOH" or "Lys(<b><i>TAMRA</i></b>) R C K N N COOH"</li>
+  <li><b>Special Modifications</b><br />
+  Besides typical fluorophores it is possible to use "p" to indicate a phosphorylation (e.g. "p Tyr") and a tilde at a Cystein residue to indicate a disulfide bond (e.g. "Ac C(~) K G N R C(~) COOH")</li>
+  </ul>
+  A full list of building blocks will be provided at the "/building_blocks" API-endpoint which is currently still work in progress.
+  `;
 }
 
 function calculate() {
@@ -10,7 +25,7 @@ function calculate() {
     return;
   }
 
-  const resultDiv = document.getElementById('result');
+  const resultDiv = document.getElementById('responsive_area');
   //resultDiv.innerHTML = `<div aria-busy="true">Calculating...</div>`
   resultDiv.innerHTML = `<progress></progress>`
 
@@ -27,8 +42,9 @@ function calculate() {
     });
 }
 
+// TODO: Add termination sequences to result
 function displayResult(data) {
-  const resultDiv = document.getElementById('result');
+  const resultDiv = document.getElementById('responsive_area');
   resultDiv.innerHTML = `
     <h4>Results:</h4>
     <b>Molecular Weight:</b> ${data.MolWt}<br />

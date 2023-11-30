@@ -107,8 +107,31 @@ async def building_blocks():
 
     **Format of this endpoint is currently WIP and will likely change in the future**
     """
-    return (input_monomers().to_markdown(index=False))
-    #return (input_monomers().to_string(columns=["Group"], header=True, index=False))
+    amino_acids = ""
+    for monomer in input_monomers().loc[input_monomers()["Type"]=="Amino Acid", "Group"]:
+        amino_acids = amino_acids + monomer + ", "
+    pnas = ""
+    for monomer in input_monomers().loc[input_monomers()["Type"]=="PNA", "Group"]:
+        pnas = pnas + monomer + ", "
+    fluorophores = ""
+    for monomer in input_monomers().loc[input_monomers()["Type"]=="fluorophores", "Group"]:
+        fluorophores = fluorophores + monomer + ", "
+    c_terminal_mods = ""
+    for monomer in input_monomers().loc[input_monomers()["Type"]=="C-terminal modification", "Group"]:
+        c_terminal_mods = c_terminal_mods + monomer + ", "
+    protecting_groups = ""
+    for monomer in input_monomers().loc[input_monomers()["Type"]=="Protecting Groups", "Group"]:
+        protecting_groups = protecting_groups + monomer + ", "
+
+    response = {
+        "Amino Acids": amino_acids,
+        "PNA monomers": pnas,
+        "Protecting Groups": protecting_groups,
+        "Fluorophores": fluorophores,
+        "C-Terminal Modifications": c_terminal_mods
+    }
+
+    return(response)
 
 @app.get("/calc/molwt", tags=["Feature calculation"])
 async def exact(sequence: str):
